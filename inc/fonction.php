@@ -1,0 +1,33 @@
+<?php 
+    require 'connexion.php';
+
+    /* Inscription et connexion */
+function inscription($email, $nom, $date_de_naissance, $mdp)
+{
+    $connexion = connection();
+
+    $requete = "INSERT INTO UTILISATEUR (Email, Nom, Date_naissance, Mot_de_passe) VALUES ('%s', '%s', '%s', '%s')";
+    $final = sprintf($requete, $email, $nom, $date_de_naissance, $mdp);
+    $insertion = mysqli_query($connexion, $final);
+    header('Location: ../index.php');
+}
+
+function login($email, $mdp)
+{
+    $connexion = connection();
+
+    $requete = "SELECT * FROM Membre WHERE email = '%s' AND mot_de_passe = '%s'";
+    $final = sprintf($requete, $email, $mdp);
+    $result = mysqli_query($connexion, $final);
+    $data = mysqli_fetch_assoc($result);
+    if ($data) {
+        unset($data['Mot_de_passe']);
+        $_SESSION['user'] = $data;
+        header('Location: ./pages/accueil.php');
+        exit();
+    } else {
+        $_SESSION['error'] = "Email ou mot de passe incorrect !";
+    }
+}
+
+?>
