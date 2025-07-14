@@ -50,4 +50,24 @@ function list_object()
     return $liste;
 } 
 
+function objet_emprunter(){
+    $connexion = connection();
+
+    $sql= "SELECT o.*, e.id_objet AS emp FROM Objet o
+    JOIN emprunt e ON e.id_objet = o.id_objet";
+
+    $resultat= mysqli_query($connexion , $sql);
+    
+    $liste = array();
+
+    while( $result = mysqli_fetch_assoc($resultat))
+    {
+        $liste[] = $result;
+    }
+
+    mysqli_free_result($resultat);
+    deconnection($connexion);
+    return $liste;
+}
+
 ?>

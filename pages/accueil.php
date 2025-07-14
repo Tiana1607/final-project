@@ -10,6 +10,8 @@ $user = $_SESSION['user'];
 
 $list_objet = list_object();
 
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +25,7 @@ $list_objet = list_object();
 </head>
 
 <body>
-    <header>
+    <header class="mt-5 mb-5 ">
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid position-fixed">
                 <div class="container d-flex">
@@ -37,7 +39,7 @@ $list_objet = list_object();
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <!-- Menu -->
-                    <div class="collapse navbar-collapse" id="navbarNav" style="margin-left: 90px;">
+                    <div class="collapse navbar-collapse " id="navbarNav" style="margin-left: 90px;">
                         <ul class="navbar-nav">
                             <li class="nav-item"><a href="#home" class="nav-link" aria-current="page"
                                     style="color: white; font-size: 18px; margin-right: 10px;">Home</a></li>
@@ -63,12 +65,27 @@ $list_objet = list_object();
         </nav>
     </header>
     <main>
-        <section>
-            <?php foreach($list_objet as $list) :?>
-                <div>
-                    <?= $list['nom_objet']?>
+        <section >
+            <div class="container">
+                <div class="row gap-4">
+                    <?php foreach ($list_objet as $list) { ?>
+                        <?php $emprunter= objet_emprunter()?>
+                       
+                        <article class="col-2 bg-white p-0"
+                            style="border: 1px #ddd solid; border-radius: 10px; display: inline-block;">
+                            <!-- Lien vers la page fiche.php avec l'ID de la propriété -->
+                                <div class="text mt-2">
+                                    <h5><?= $list['nom_objet'] ?></h5>
+                                    <?php if($emprunter['emp'] == $list['id_objet']){?> 
+                                        <p><?= $emprunter['date_retour']?></p>    
+                                    <?php }?>
+                                </div>
+                            </a>
+                        </article>
+                    <?php } ?>
                 </div>
-            <?php endforeach;?>
+            </div>
+
         </section>
     </main>
 </body>
