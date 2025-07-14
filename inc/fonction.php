@@ -30,4 +30,24 @@ function login($email, $mdp)
     }
 }
 
+function list_object()
+{
+    $connexion = connection();
+
+    $sql = "SELECT * FROM Objet";
+
+    $trait = mysqli_query($connexion, $sql);
+
+    $liste = array();
+
+    while( $result = mysqli_fetch_assoc($trait))
+    {
+        $liste[] = $result;
+    }
+
+    mysqli_free_result($trait);
+    deconnection($connexion);
+    return $liste;
+} 
+
 ?>
