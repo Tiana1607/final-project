@@ -50,24 +50,62 @@ function list_object()
     return $liste;
 } 
 
-function objet_emprunter(){
+
+function objet_emprunter() {
     $connexion = connection();
 
-    $sql= "SELECT o.*, e.id_objet AS emp FROM Objet o
-    JOIN emprunt e ON e.id_objet = o.id_objet";
+    $sql = "SELECT id_objet, date_retour FROM emprunt WHERE date_retour IS NOT NULL";
+    $resultat = mysqli_query($connexion, $sql);
 
-    $resultat= mysqli_query($connexion , $sql);
-    
     $liste = array();
-
-    while( $result = mysqli_fetch_assoc($resultat))
-    {
-        $liste[] = $result;
+    while ($row = mysqli_fetch_assoc($resultat)) {
+        $liste[$row['id_objet']] = $row['date_retour'];
     }
 
     mysqli_free_result($resultat);
     deconnection($connexion);
+
     return $liste;
 }
+
+function list_categorie()
+{
+    $connexion = connection();
+
+    $sql = "SELECT * FROM categorie_objet";
+
+    $trait = mysqli_query($connexion, $sql);
+
+    $liste = array();
+
+    while( $result = mysqli_fetch_assoc($trait))
+    {
+        $liste[] = $result;
+    }
+
+    mysqli_free_result($trait);
+    deconnection($connexion);
+    return $liste;
+}
+
+function filtre_objets_par_categorie($id_categorie)
+{
+    $connexion = connection();
+
+    $sql = "SELECT * FROM Objet WHERE id_categorie = %d";
+    $sql = sprintf($sql, $id_categorie);
+
+    $trait = mysqli_query($connexion, $sql);
+
+    $liste = array();
+    while ($result = mysqli_fetch_assoc($trait)) {
+        $liste[] = $result;
+    }
+
+    mysqli_free_result($trait);
+    deconnection($connexion);
+    return $liste;
+}
+
 
 ?>
